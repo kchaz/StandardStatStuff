@@ -1,6 +1,6 @@
 \documentclass{article}
 
-\usepackage{geometry}
+\usepackage[margin = .75in]{geometry}
 
 % Required for inserting images
 \usepackage{graphicx} 
@@ -127,7 +127,7 @@ where
 \begin{bmatrix}
 \frac{1}{\mu_y} \\ -\frac{\mu_x}{\mu_y^2}
 \end{bmatrix} \\ 
-&=
+&= %----------
 \begin{bmatrix}
   \frac{\sigma_x^2}{\mu_y} - \frac{\sigma_{xy}\mu_x}{\mu_y^2}  & \frac{\sigma_{xy}}{\mu_y} - \frac{\mu_x\sigma_{y}^2}{\mu_y^2} \\
 \end{bmatrix}
@@ -136,9 +136,86 @@ where
 \end{bmatrix} \\ 
 &=
   \frac{\sigma_x^2}{\mu_y^2} - \frac{\sigma_{xy}\mu_x}{\mu_y^3}  - \frac{\sigma_{xy}\mu_x}{\mu_y^3} + \frac{\mu_x^2\sigma_{y}^2}{\mu_y^4} \\
- &=
-  \frac{\sigma_x^2}{\mu_y^2} - 2\frac{\sigma_{xy}\mu_x}{\mu_y^3}  + \frac{\mu_x^2\sigma_{y}^2}{\mu_y^4} \\
 \end{align*}
+
+Overall, the asymptotic variance is
+
+\begin{equation}\label{eq-ratiovar}
+  \Var\left(\frac{\bar{X}}{\bar{Y}}\right)\rightarrow  \frac{\sigma_x^2}{\mu_y^2} - 2\frac{\sigma_{xy}\mu_x}{\mu_y^3}  + \frac{\mu_x^2\sigma_{y}^2}{\mu_y^4}
+\end{equation}
+
+
+\newpage 
+\noindent \textbf{Extension:} Now suppose we have i.i.d. vectors $(X_{i1},Y_{i1},X_{i2},Y_{i2},...,X_{ip},Y_{ip})$, associated $\mu_{x_j},\mu_{y_j},\sigma_{x_j},\sigma_{y_j}$ for $j=1,...,p$, and associated covariances $\sigma_{x_jx_k}$, $\sigma_{x_jy_k}$, $\sigma_{y_jy_k}$. We can again apply the multivariate CLT
+
+\begin{equation*} \sqrt{n} \frac{1}{n}\sum_{i=1}^{n}
+    \left(\left(\begin{array}{c}
+        X_{i1}  \\
+        Y_{i1}  \\ 
+        \vdots \\ 
+        X_{ip}\\
+        Y_{ip}\\
+    \end{array}\right) - \left(\begin{array}{c}
+        \mu_{x1}  \\
+        \mu_{y1}  \\ 
+        \vdots \\ 
+        \mu_{xp}  \\
+        \mu_{yp}  \\ 
+    \end{array}\right)\right) \xrightarrow{d}
+    N\left(\left(\begin{array}{c}
+        0  \\
+        0  \\
+        \vdots \\
+        0  \\
+        0  \\
+    \end{array}\right),\Sigma \right)
+\end{equation*}
+
+\begin{equation*}
+    \Sigma = \left(\begin{array}{ccccc}
+        \sigma_{x_1}^2  & \sigma_{x_1y_1}  & ... & \sigma_{x_1,x_p} & \sigma_{x_1y_p} \\
+        \sigma_{y_1x_1} & \sigma_{y_1}^2   &... & \sigma_{y_1x_p} &\sigma_{y_1y_p} \\
+        \vdots   & ... & \ddots  & ... & \vdots  \\
+        \sigma_{x_px_1} & \sigma_{x_py_1} & ... & \sigma_{x_p}^2  & \sigma_{x_py_p}^2 \\
+        \sigma_{y_px_1} & \sigma_{y_py_1} & ... & \sigma_{y_px_p} & \sigma_{y_p}^2 \\
+    \end{array}\right) \in \mathbb{R}^{2p\times 2p}
+\end{equation*}
+
+Suppose we are interested in a the collection of ratios estimators $\frac{\bar{X}_{j}}{\bar{Y}_j}$ for $j=1,...,p$. We could apply the transformation $f(a_1,b_1,...,a_p,b_p) = \left(\frac{a_1}{b_1},...,\frac{a_p}{b_p}\right)$ with Jacobian
+
+\begin{align*} 
+J(a_1,...,a_p,b_1,...,b_p) &= \begin{bmatrix}
+\frac{\partial f_1 }{\partial a_1} & \frac{\partial f_1 }{\partial b_1} & ... &  \frac{\partial f_1 }{\partial a_p}&  \frac{\partial f_1 }{\partial b_p}\\
+\vdots  & \vdots &  ... & \vdots & \vdots  \\
+\frac{\partial f_p }{\partial a_1} & \frac{\partial f_p }{\partial b_1} & ... &  \frac{\partial f_p }{\partial a_p}   & \frac{\partial f_p }{\partial b_p}\\
+\end{bmatrix} \\ 
+&= \text{diag}\left(\begin{bmatrix}
+\frac{1}{b_1} & -\frac{a_1}{b_1^2} \\ 
+\end{bmatrix},...,\begin{bmatrix}
+\frac{1}{b_p} & -\frac{a_p}{b_p^2} \\ 
+\end{bmatrix} \right) \in \mathbb{R}^{p\times 2p}
+\end{align*}  
+
+where the diag notation means a block diagonal type matrix where in each row, only two elements are non-zero and in each column, only one element is non-zero. 
+
+The asymptotic variance is $J\Sigma J^T$. As expected, the diagonal of this matrix is just the corresponding version of Equation (\ref{eq-ratiovar}) for that ratio estimator. For the covariance of the $j^{th}$ pair and the $k^{th}$ pair, we get
+
+\begin{align*}
+(J\Sigma J^T)_{j,k} &= 
+    \begin{bmatrix}
+  \frac{\sigma_{x_jx_k}}{\mu_{y_j}} - \frac{\sigma_{x_jy_k}\mu_{x_j}}{\mu_{y_j}^2}  & \frac{\sigma_{x_jy_k}}{\mu_{y_j}} - \frac{\mu_{x_j}\sigma_{y_j,y_k}}{\mu_{y_j}^2} \\
+\end{bmatrix} \begin{bmatrix}
+   \frac{1}{\mu_{y_k}} \\ 
+    -\frac{\mu_{x_k}}{\mu_{y_k}^2} \\ 
+\end{bmatrix}\\ 
+&= \frac{\sigma_{x_jx_k}}{\mu_{y_j}\mu_{y_k}} - \frac{\sigma_{x_jy_k}\mu_{x_j}}{\mu^2_{y_j}\mu_{y_k}} - \frac{\sigma_{x_jy_k}\mu_{x_k}}{\mu_{y_j}\mu_{y_k}^2}  + \frac{\mu_{x_j}\mu_{x_k}\sigma_{y_jy_k}}{\mu_{y_j}^2\mu_{y_k}^2}
+\end{align*}
+
+That is 
+
+\begin{equation*}
+    \Cov\left(\frac{\bar{Y}_j}{\bar{X}_j}, \frac{\bar{Y}_k}{\bar{X}_k}\right) \rightarrow \frac{\sigma_{x_jx_k}}{\mu_{y_j}\mu_{y_k}} - \frac{\sigma_{x_jy_k}\mu_{x_j}}{\mu^2_{y_j}\mu_{y_k}} - \frac{\sigma_{x_jy_k}\mu_{x_k}}{\mu_{y_j}\mu_{y_k}^2}  + \frac{\mu_{x_j}\mu_{x_k}\sigma_{y_jy_k}}{\mu_{y_j}^2\mu_{y_k}^2}
+\end{equation*}
 
 
 
