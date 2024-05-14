@@ -76,7 +76,7 @@
 
 \maketitle
 
-
+\section{Single Ratio Estimator}
 
 Let $(X_i,Y_i)$ be i.i.d. random vectors with mean vector $(\mu_x,\mu_y)$, variances $\Var(X_i)=\sigma_x^2$, $\Var(Y_i)=\sigma_y^2$ and $\Cov(X_i,Y_i)=\sigma_{xy}$. Notice that $X_i$ and $Y_i$ are allowed to be dependent -- we only assume independence across $i$. By the multivariate central limit theorem, 
 
@@ -146,21 +146,23 @@ Overall, the asymptotic variance is
 
 
 \newpage 
-\noindent \textbf{Extension:} Now suppose we have i.i.d. vectors $(X_{i1},Y_{i1},X_{i2},Y_{i2},...,X_{ip},Y_{ip})$, associated $\mu_{x_j},\mu_{y_j},\sigma_{x_j},\sigma_{y_j}$ for $j=1,...,p$, and associated covariances $\sigma_{x_jx_k}$, $\sigma_{x_jy_k}$, $\sigma_{y_jy_k}$. We can again apply the multivariate CLT
+\section{Collection of Ratio Estimators (Less Standard Extension)}
+
+Now suppose we have i.i.d. vectors $(U_{i1},D_{i1},U_{i2},D_{i2},...,U_{ip},D_{ip})$ where $U$ stands for upper and $D$ for denominator. Suppose we have associated means $\mu_{u_j},\mu_{d_j}$, variances $\sigma_{u_j},\sigma_{d_j}$ for $j=1,...,p$, and covariances $\sigma_{u_ju_k}$, $\sigma_{u_jd_k}$, $\sigma_{d_jd_k}$. We can again apply the multivariate CLT
 
 \begin{equation*} \sqrt{n} \frac{1}{n}\sum_{i=1}^{n}
     \left(\left(\begin{array}{c}
-        X_{i1}  \\
-        Y_{i1}  \\ 
+        U_{i1}  \\
+        D_{i1}  \\ 
         \vdots \\ 
-        X_{ip}\\
-        Y_{ip}\\
+        U_{ip}\\
+        D_{ip}\\
     \end{array}\right) - \left(\begin{array}{c}
-        \mu_{x1}  \\
-        \mu_{y1}  \\ 
+        \mu_{u_1}  \\
+        \mu_{d_1}  \\ 
         \vdots \\ 
-        \mu_{xp}  \\
-        \mu_{yp}  \\ 
+        \mu_{u_p}  \\
+        \mu_{d_p}  \\ 
     \end{array}\right)\right) \xrightarrow{d}
     N\left(\left(\begin{array}{c}
         0  \\
@@ -173,15 +175,15 @@ Overall, the asymptotic variance is
 
 \begin{equation*}
     \Sigma = \left(\begin{array}{ccccc}
-        \sigma_{x_1}^2  & \sigma_{x_1y_1}  & ... & \sigma_{x_1,x_p} & \sigma_{x_1y_p} \\
-        \sigma_{y_1x_1} & \sigma_{y_1}^2   &... & \sigma_{y_1x_p} &\sigma_{y_1y_p} \\
+        \sigma_{u_1}^2  & \sigma_{u_1d_1}  & ... & \sigma_{u_1,u_p} & \sigma_{u_1d_p} \\
+        \sigma_{d_1u_1} & \sigma_{d_1}^2   &... & \sigma_{d_1u_p} &\sigma_{d_1d_p} \\
         \vdots   & ... & \ddots  & ... & \vdots  \\
-        \sigma_{x_px_1} & \sigma_{x_py_1} & ... & \sigma_{x_p}^2  & \sigma_{x_py_p}^2 \\
-        \sigma_{y_px_1} & \sigma_{y_py_1} & ... & \sigma_{y_px_p} & \sigma_{y_p}^2 \\
+        \sigma_{u_pu_1} & \sigma_{u_pd_1} & ... & \sigma_{u_p}^2  & \sigma_{u_pd_p}^2 \\
+        \sigma_{d_pu_1} & \sigma_{d_pd_1} & ... & \sigma_{d_pu_p} & \sigma_{d_p}^2 \\
     \end{array}\right) \in \mathbb{R}^{2p\times 2p}
 \end{equation*}
 
-Suppose we are interested in a the collection of ratios estimators $\frac{\bar{X}_{j}}{\bar{Y}_j}$ for $j=1,...,p$. We could apply the transformation $f(a_1,b_1,...,a_p,b_p) = \left(\frac{a_1}{b_1},...,\frac{a_p}{b_p}\right)$ with Jacobian
+Suppose we are interested in a the collection of ratios estimators $\frac{\bar{U}_j}{\bar{D}_j}$ for $j=1,...,p$. We could apply the transformation $f(a_1,b_1,...,a_p,b_p) = \left(\frac{a_1}{b_1},...,\frac{a_p}{b_p}\right)$ with Jacobian
 
 \begin{align*} 
 J(a_1,...,a_p,b_1,...,b_p) &= \begin{bmatrix}
@@ -203,18 +205,18 @@ The asymptotic variance is $J\Sigma J^T$. As expected, the diagonal of this matr
 \begin{align*}
 (J\Sigma J^T)_{j,k} &= 
     \begin{bmatrix}
-  \frac{\sigma_{x_jx_k}}{\mu_{y_j}} - \frac{\sigma_{x_jy_k}\mu_{x_j}}{\mu_{y_j}^2}  & \frac{\sigma_{x_jy_k}}{\mu_{y_j}} - \frac{\mu_{x_j}\sigma_{y_j,y_k}}{\mu_{y_j}^2} \\
+  \frac{\sigma_{u_ju_k}}{\mu_{d_j}} - \frac{\sigma_{u_jd_k}\mu_{u_j}}{\mu_{d_j}^2}  & \frac{\sigma_{u_jd_k}}{\mu_{d_j}} - \frac{\mu_{u_j}\sigma_{d_j,d_k}}{\mu_{d_j}^2} \\
 \end{bmatrix} \begin{bmatrix}
-   \frac{1}{\mu_{y_k}} \\ 
-    -\frac{\mu_{x_k}}{\mu_{y_k}^2} \\ 
+   \frac{1}{\mu_{d_k}} \\ 
+    -\frac{\mu_{u_k}}{\mu_{d_k}^2} \\ 
 \end{bmatrix}\\ 
-&= \frac{\sigma_{x_jx_k}}{\mu_{y_j}\mu_{y_k}} - \frac{\sigma_{x_jy_k}\mu_{x_j}}{\mu^2_{y_j}\mu_{y_k}} - \frac{\sigma_{x_jy_k}\mu_{x_k}}{\mu_{y_j}\mu_{y_k}^2}  + \frac{\mu_{x_j}\mu_{x_k}\sigma_{y_jy_k}}{\mu_{y_j}^2\mu_{y_k}^2}
+&= \frac{\sigma_{u_ju_k}}{\mu_{d_j}\mu_{d_k}} - \frac{\sigma_{u_jd_k}\mu_{u_j}}{\mu^2_{d_j}\mu_{d_k}} - \frac{\sigma_{u_jd_k}\mu_{u_k}}{\mu_{d_j}\mu_{d_k}^2}  + \frac{\mu_{u_j}\mu_{u_k}\sigma_{d_jd_k}}{\mu_{d_j}^2\mu_{d_k}^2}
 \end{align*}
 
 That is 
 
 \begin{equation*}
-    \Cov\left(\frac{\bar{Y}_j}{\bar{X}_j}, \frac{\bar{Y}_k}{\bar{X}_k}\right) \rightarrow \frac{\sigma_{x_jx_k}}{\mu_{y_j}\mu_{y_k}} - \frac{\sigma_{x_jy_k}\mu_{x_j}}{\mu^2_{y_j}\mu_{y_k}} - \frac{\sigma_{x_jy_k}\mu_{x_k}}{\mu_{y_j}\mu_{y_k}^2}  + \frac{\mu_{x_j}\mu_{x_k}\sigma_{y_jy_k}}{\mu_{y_j}^2\mu_{y_k}^2}
+    \Cov\left(\frac{\bar{D}_j}{\bar{U}_j}, \frac{\bar{U}_k}{\bar{D}_k}\right) \rightarrow \frac{\sigma_{u_ju_k}}{\mu_{d_j}\mu_{d_k}} - \frac{\sigma_{u_jd_k}\mu_{u_j}}{\mu^2_{d_j}\mu_{d_k}} - \frac{\sigma_{u_jd_k}\mu_{u_k}}{\mu_{d_j}\mu_{d_k}^2}  + \frac{\mu_{u_j}\mu_{u_k}\sigma_{d_jd_k}}{\mu_{d_j}^2\mu_{d_k}^2}
 \end{equation*}
 
 
