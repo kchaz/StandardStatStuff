@@ -1,0 +1,147 @@
+\documentclass{article}
+
+\usepackage{geometry}
+
+% Required for inserting images
+\usepackage{graphicx} 
+
+% Turn off indenting
+\usepackage{parskip}
+
+% Basic Math imports
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{float}
+
+
+%hyperlink stuff
+%https://tex.stackexchange.com/questions/117943/hyperref-footnotes-and-section-ref-colors
+\usepackage{etoolbox}
+\usepackage{hyperref} %make hyperlinks colored, not boxed
+%\hypersetup{colorlinks=true, urlcolor=blue}
+\hypersetup{colorlinks=true,
+             urlcolor=RoyalPurple,
+             citecolor=RoyalPurple,
+             linkcolor = RoyalPurple}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\makeatletter
+\def\@footnotecolor{red}
+\define@key{Hyp}{footnotecolor}{%
+ \HyColor@HyperrefColor{#1}\@footnotecolor%
+}
+\patchcmd{\@footnotemark}{\hyper@linkstart{link}}{\hyper@linkstart{footnote}}{}{}
+\makeatother
+\hypersetup{footnotecolor=gray}
+
+
+%Some other imports
+\usepackage{centernot} %for negation
+\usepackage{arydshln} %dashed lines in tables
+\usepackage{tikz} %drawing
+\usepackage{multirow}
+\usepackage{natbib} %bib
+
+
+%Declare operators and additional notation
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\newcommand{\indep}{\perp \!\!\! \perp}
+\newcommand{\noindep}{\not\!\perp\!\!\!\perp}
+\newcommand{\notdoubleimplies}{\centernot \longleftrightarrow}
+\newcommand{\cOn}{\mathcal{O}_n}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathbb{V}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\Cov}{\mbox{Cov}}
+\newcommand{\ITT}{\mbox{ITT}}
+\newcommand{\simiid}{\stackrel{iid}{\sim}}
+\newcommand{\greencheck}{{\color{ForestGreen}\checkmark}}
+\newcommand{\redx}{{\color{BrickRed}$\times$}}
+
+%environments
+\newtheorem{theorem}{Theorem}
+\theoremstyle{definition}
+\newtheorem{definition}{Def.}
+
+
+\title{Asymptotic Variance of Ratio Estimator}
+\author{Kyla Chasalow}
+\date{May 2024}
+
+\begin{document}
+
+\maketitle
+
+
+
+Let $(X_i,Y_i)$ be i.i.d. random vectors with mean vector $(\mu_x,\mu_y)$, variances $\Var(X_i)=\sigma_x^2$, $\Var(Y_i)=\sigma_y^2$ and $\Cov(X_i,Y_i)=\sigma_{xy}$. Notice that $X_i$ and $Y_i$ are allowed to be dependent -- we only assume independence across $i$. By the multivariate central limit theorem, 
+
+\begin{equation*} \sqrt{n} \frac{1}{n}\sum_{i=1}^{n}
+    \left(\left(\begin{array}{c}
+        X_i  \\
+        Y_i  \\ 
+    \end{array}\right) - \left(\begin{array}{c}
+        \mu_x  \\
+        \mu_y  \\ 
+    \end{array}\right)\right) \xrightarrow{d}
+    N\left(\left(\begin{array}{c}
+        0  \\
+        0 
+    \end{array}\right),\left(\begin{array}{cc}
+        \sigma_x^2  &  \sigma_{xy} \\
+        \sigma_{xy} & \sigma_y^2 \\
+    \end{array}\right)\right)
+\end{equation*}
+
+To calculate the asymptotic variance of the ratio estimate $\frac{\bar{X}_n}{\bar{Y}_n}$, apply the delta method with $f(a,b)=\frac{a}{b}$ and Jacobian
+
+\begin{align*} 
+J(a,b) &= \begin{bmatrix}
+\frac{\partial f(a,b) }{\partial a} & \frac{\partial f(a,b) }{\partial b}
+\end{bmatrix} = \begin{bmatrix}
+\frac{1}{b} &  -\frac{a}{b^2}
+\end{bmatrix}.
+\end{align*}  
+
+This yields
+
+\begin{equation*}
+\sqrt{n}\left(\frac{\bar{X}_n}{\bar{Y}_n} - \frac{\mu_x}{\mu_y}\right) \xrightarrow{d} N(0, JVJ^T)
+\end{equation*}
+
+where
+
+
+\begin{align*}
+    JVJ^T &= \begin{bmatrix}
+\frac{1}{\mu_y} &  -\frac{\mu_x}{\mu_y^2}
+\end{bmatrix} 
+\begin{bmatrix}
+    \sigma_x^2   &  \sigma_{xy}\\
+    \sigma_{xy} & \sigma_y^2  \\
+\end{bmatrix}
+\begin{bmatrix}
+\frac{1}{\mu_y} \\ -\frac{\mu_x}{\mu_y^2}
+\end{bmatrix} \\ 
+&=
+\begin{bmatrix}
+  \frac{\sigma_x^2}{\mu_y} - \frac{\sigma_{xy}\mu_x}{\mu_y^2}  & \frac{\sigma_{xy}}{\mu_y} - \frac{\mu_x\sigma_{y}^2}{\mu_y^2} \\
+\end{bmatrix}
+\begin{bmatrix}
+\frac{1}{\mu_y} \\ -\frac{\mu_x}{\mu_y^2}
+\end{bmatrix} \\ 
+&=
+  \frac{\sigma_x^2}{\mu_y^2} - \frac{\sigma_{xy}\mu_x}{\mu_y^3}  - \frac{\sigma_{xy}\mu_x}{\mu_y^3} + \frac{\mu_x^2\sigma_{y}^2}{\mu_y^4} \\
+ &=
+  \frac{\sigma_x^2}{\mu_y^2} - 2\frac{\sigma_{xy}\mu_x}{\mu_y^3}  + \frac{\mu_x^2\sigma_{y}^2}{\mu_y^4} \\
+\end{align*}
+
+
+
+
+
+\end{document}
