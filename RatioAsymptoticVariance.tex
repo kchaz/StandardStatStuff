@@ -126,15 +126,12 @@ where
 \end{bmatrix}
 \begin{bmatrix}
 \frac{1}{\mu_y} \\ -\frac{\mu_x}{\mu_y^2}
-\end{bmatrix} \\ 
-&= %----------
-\begin{bmatrix}
+\end{bmatrix} =\begin{bmatrix}
   \frac{\sigma_x^2}{\mu_y} - \frac{\sigma_{xy}\mu_x}{\mu_y^2}  & \frac{\sigma_{xy}}{\mu_y} - \frac{\mu_x\sigma_{y}^2}{\mu_y^2} \\
 \end{bmatrix}
 \begin{bmatrix}
 \frac{1}{\mu_y} \\ -\frac{\mu_x}{\mu_y^2}
-\end{bmatrix} \\ 
-&=
+\end{bmatrix} =
   \frac{\sigma_x^2}{\mu_y^2} - \frac{\sigma_{xy}\mu_x}{\mu_y^3}  - \frac{\sigma_{xy}\mu_x}{\mu_y^3} + \frac{\mu_x^2\sigma_{y}^2}{\mu_y^4} \\
 \end{align*}
 
@@ -143,6 +140,15 @@ Overall, the asymptotic variance is
 \begin{equation}\label{eq-ratiovar}
   \Var\left(\frac{\bar{X}}{\bar{Y}}\right)\rightarrow  \frac{\sigma_x^2}{\mu_y^2} - 2\frac{\sigma_{xy}\mu_x}{\mu_y^3}  + \frac{\mu_x^2\sigma_{y}^2}{\mu_y^4}
 \end{equation}
+
+\textbf{Comment:} if $X_i$ is mean-centered to begin with, i.e. $\mu_x=0$, then the expression simplifies to
+
+\begin{equation}\label{eq-ratiovar}
+  \Var\left(\frac{\bar{X}}{\bar{Y}}\right)\rightarrow  \frac{\sigma_x^2}{\mu_y^2}
+\end{equation}
+
+In this case, we can also obtain this result by a much simpler argument using Slutsky's theorem. That is, by the LLN, $\bar{Y}\xrightarrow{p} \mu_y$ and by the standard CLT, $\sqrt{n}\bar{X} \xrightarrow{d} N(0,\sigma_x^2)$  and hence by Slutsky, $\sqrt{n}\frac{\bar{X}}{\bar{Y}} \xrightarrow{d} N(0,\frac{\sigma_x^2}{\mu_y^2})$. We could show the same result for a generic $\frac{\bar{X}-\mu_x}{\bar{Y}}$, but if we are interested in $\frac{\bar{X}}{\bar{Y}}$, it is not clear how to immediately back that out since we would have to consider the asymptotic distribution of $\frac{\bar{X}-\mu_x}{\bar{Y}} + \frac{\mu_x}{\bar{Y}}$ and $\frac{1}{\bar{Y}}$ will not in general by asymptotically normal and is not independent of the other term.
+
 
 
 \newpage 
