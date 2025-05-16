@@ -1,0 +1,66 @@
+
+% Required for inserting images
+\usepackage{graphicx} 
+
+% Turn off indenting
+\usepackage{parskip}
+
+% Basic Math imports
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{float}
+
+
+%hyperlink stuff
+%https://tex.stackexchange.com/questions/117943/hyperref-footnotes-and-section-ref-colors
+\usepackage{etoolbox}
+\usepackage{hyperref} %make hyperlinks colored, not boxed
+%\hypersetup{colorlinks=true, urlcolor=blue}
+\hypersetup{colorlinks=true,
+             urlcolor=RoyalPurple,
+             citecolor=RoyalPurple,
+             linkcolor = RoyalPurple}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\makeatletter
+\def\@footnotecolor{red}
+\define@key{Hyp}{footnotecolor}{%
+ \HyColor@HyperrefColor{#1}\@footnotecolor%
+}
+\patchcmd{\@footnotemark}{\hyper@linkstart{link}}{\hyper@linkstart{footnote}}{}{}
+\makeatother
+\hypersetup{footnotecolor=gray}
+
+
+%Some other imports
+\usepackage{centernot} %for negation
+\usepackage{arydshln} %dashed lines in tables
+\usepackage{tikz} %drawing
+\usepackage{multirow}
+\usepackage{natbib} %bib
+
+
+%Declare operators and additional notation
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\newcommand{\indep}{\perp \!\!\! \perp}
+\newcommand{\noindep}{\not\!\perp\!\!\!\perp}
+\newcommand{\notdoubleimplies}{\centernot \longleftrightarrow}
+\newcommand{\cOn}{\mathcal{O}_n}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathbb{V}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\Cov}{\mbox{Cov}}
+\newcommand{\Corr}{\mbox{Corr}}
+\newcommand{\ITT}{\mbox{ITT}}
+\newcommand{\simiid}{\stackrel{iid}{\sim}}
+\newcommand{\greencheck}{{\color{ForestGreen}\checkmark}}
+\newcommand{\redx}{{\color{BrickRed}$\times$}}
+
+%environments
+\newtheorem{theorem}{Theorem}
+\theoremstyle{definition}
+\newtheorem{definition}{Def.}

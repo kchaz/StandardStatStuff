@@ -1,0 +1,75 @@
+\documentclass{article}
+
+\usepackage[margin = .75in]{geometry}
+
+
+\input{header}
+
+\title{Expectation of a Ratio}
+\author{Kyla Chasalow}
+\date{May 2025}
+
+\begin{document}
+
+\maketitle 
+
+It is well known that 
+
+\[ \E\left[\frac{X}{Y}\right]\neq \frac{\E[X]}{\E[Y]}\]
+
+unless $\Var(Y)=0$. Now take a 2nd order Taylor expansion of $f(x,y)=\frac{x}{y}$ about $\mu_x=\E[X]$ and $\mu_y=\E[Y]$. The derivatives involved are:
+
+
+\begin{align*}
+    f^{(0)}(\mu_x,\mu_y) &= \frac{\mu_x}{\mu_y} \\
+    f_x^{(1)}(\mu_x,\mu_y) &= \frac{1}{\mu_y}, \quad f_y^{(1)}(\mu_x,\mu_y) = -\frac{\mu_x}{\mu_y^2} \\
+    f_{xx}^{(2)}(\mu_x,\mu_y) &= 0, \quad f_{xy}^{(2)}(\mu_x,\mu_y) = -\frac{1}{\mu_y^2}, \quad f_{yy}^{(2)}(\mu_x,\mu_y) = \frac{2\mu_x}{\mu_y^3}
+\end{align*}
+
+
+Thus, the second-order Taylor expansion is:
+
+\begin{align*}
+    \frac{X}{Y} \approx\ & \frac{\mu_x}{\mu_y} + \frac{1}{\mu_y}(X - \mu_x) - \frac{\mu_x}{\mu_y^2}(Y - \mu_y) \\
+    & + 0 - \frac{1}{\mu_y^2}(X - \mu_x)(Y - \mu_y) + \frac{\mu_x}{\mu_y^3}(Y - \mu_y)^2
+\end{align*}
+
+Taking expectations of both sides and using $\E[X-\mu_x]=\E[Y-\mu_y]=0$,
+
+\begin{align*}
+    \E\left[\frac{X}{Y}\right] \approx\ & \frac{\mu_x}{\mu_y} - \frac{1}{\mu_y^2} \Cov(X, Y) + \frac{\mu_x}{\mu_y^3} \Var(Y)
+\end{align*}
+
+Equivalently, letting $\sigma_x^2=\Var(X),\sigma_y^2=\Var(Y)$,
+
+\begin{align*}
+    \E\left[\frac{X}{Y}\right] \approx\ & \frac{\mu_x}{\mu_y} - \frac{\sigma_x\sigma_y}{\mu_y^2} \Corr(X, Y) + \frac{\mu_x}{\mu_y^3} \sigma_y^2
+\end{align*}
+
+
+\newpage \textbf{Observations:}
+
+\begin{itemize}
+
+
+    \item In a first order Taylor sense, $\E\left[\frac{X}{Y}\right] \approx \frac{\mu_x}{\mu_y}$. 
+    \item The second order reveals what could make this approximation better or worse. If $\mu_y^2 \gg \sigma_x\sigma_y\Corr(X,Y)$  and $\mu_y^3 \gg \mu_x\sigma_y^2$, then approximation will be better. This makes sense in that if $Y$ has small variance around a large mean, the ratio $X/Y$ will not be very sensitive to fluctuations in $Y$ and $Y$ will behave approximately like a constant.
+    
+    \item Even if $\Cov(X,Y)=0$, the expectation of a ratio is not the ratio of expectations.
+    
+    \item If it happens that
+
+    \[ \Cov(X,Y)=\sigma_y^2\frac{\mu_x}{\mu_y}\]
+
+    or equivalently, if
+    
+\[ \Corr(X,Y)=\frac{\sigma_y\mu_x}{\sigma_x\mu_y}\]
+    
+
+    Then the 2nd order Taylor approximation is exactly the ratio of means. 
+    For example, this owuld happen if $X,Y$ are equal variance, their correlation has to happen to be the ratio of their means (which is not always possible if the ratio is $>1$ in magnitude). This edge case does not seem likely to often hold exactly.
+    
+    
+\end{itemize}
+
+\end{document}
